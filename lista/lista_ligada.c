@@ -1,50 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "lista_ligada.h"
 
-typedef struct no
-{
-	struct no *prox, *ant;
-	int chave;
-}NO;
-
-typedef struct
-{
-	NO inicio, fim;
-}lista;
-
+//setando os ponteiros da lista como NULL
 void inicializa_lista(lista *l){
-	l->inicio = NULL;
+	l->ini = NULL;
 	l->fim = NULL;
 }
 
+//retorna 1 se a lista estiver vazia e 0 caso o contrario
 int lista_vazia(lista l){
 	if(l.fim == NULL)
 		return 1;
 	return 0;
 }
 
+//insere o elemento na ultima posicao da lista
 void insere_fim(lista *l, int chave){
 	NO* temp = (NO*)malloc(sizeof(NO));
 	temp->prox = NULL;
 	temp->ant = l->fim;
 	temp->chave = chave;
 	l->fim = temp;
-	if(l->inicio == NULL)
-		l->inicio = temp;
+	if(l->ini == NULL)
+		l->ini = temp;
 }
 
+//insere o elemento na primeira posicao da lista
 void insere_inicio(lista *l, int chave){
 	NO* temp = (NO*)malloc(sizeof(NO));
-	temp->prox = l->inicio;
+	temp->prox = l->ini;
 	temp->ant = NULL;
 	temp->chave = chave;
-	l->inicio = temp;
+	l->ini = temp;
 	if(l->fim == NULL)
 		l->fim = temp;
 }
 
 //mantem a lista de elementos ordenada, inserindo o novo NO ja na sua posicao correta
-void insere_ordenado(lista *l, int chave){
+void insere_ordenado(lista *l, elem chave){
 	NO*temp = malloc(sizeof(NO));
 	temp->chave = chave;
 	if(!lista_vazia(*l)){
@@ -63,11 +57,11 @@ void insere_ordenado(lista *l, int chave){
 				aux = aux->prox;
 			}
 			if(aux->prox != NULL)
-				if(aux->prox->chave == chave){ //tentando inserir uma chave igual, somente altero os pesos
+				if(aux->prox->chave == chave){ //tentando inserir uma chave igual
 					return ;
 				}
 			if(aux->prox == NULL){
-				temp->prox = NULL;
+				temp->prox = NULL;	
 				l->fim = temp;
 			}else{
 				temp->prox = aux->prox;
@@ -86,7 +80,7 @@ void insere_ordenado(lista *l, int chave){
 
 NO* procura(lista l, int chave){
 	NO* temp;
-	temp = l.inicio;
+	temp = l.ini;
 	while(temp != NULL){
 		if(temp->chave == chave)
 			return temp;
@@ -95,23 +89,10 @@ NO* procura(lista l, int chave){
 	return NULL;
 }
 
-void remove(lista *l, NO* n){
-	if(l->inicio == n)
-		l->inicio = n->prox;
-	if(l->fim == n)
-		l->fim = n->ant;
-	if(n->prox != NULL)
-		n->prox->ant = n->ant;
-	if(n->ant != NULL)
-		n->ant->prox = n->prox;
-	free(n);
-}
-
 void remove_lista(lista *l, elem chave){
-	NO* temp = busca(*l, chave);
+	NO* temp = procura(*l, chave);
 	if(temp == NULL)
 		return; //tentando remover algo que nao esta inserido na lista
-	l->tam -= 1;
 	if(temp == l->ini){
 		if(temp->prox != NULL){
 			temp->prox->ant = NULL;
