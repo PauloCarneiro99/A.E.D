@@ -1,20 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "fila.h"
 
-typedef int elem;
-
-typedef struct no
-{
-	struct no *prox, *ant;
-	elem chave;	
-}NO;
-
-typedef struct 
-{
-	NO *ini;
-	NO *fim;
-}FILA;
-
+//inserindo o elemento no final da fila, atualiza o ponteiro do fim
 void push(FILA *f, elem chave){
 	NO *temp = malloc(sizeof(NO));
 	temp->chave = chave;
@@ -25,9 +13,10 @@ void push(FILA *f, elem chave){
 	f->fim = temp;
 }
 
+//removendo o primeiro elemento da fila e atualizando os ponteiros e atualizando os ponteiros
 void pop(FILA *f){
 	NO *temp = f->ini;
-	if(f->ini != NULL){//removendo elemento de uma fila vazia
+	if(f->ini != NULL){
 		f->ini = temp->prox;
 		free(temp);
 	}
@@ -37,9 +26,3 @@ void pop(FILA *f){
 		f->fim = NULL;
 	}
 }
-
-int main(int argc, char const *argv[])
-{
-	/* code */
-	return 0;
-} 
