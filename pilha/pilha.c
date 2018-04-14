@@ -1,25 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef int elem;
+/*
+	Apesar que a implementacao com vetores seria algo mais trivial, reallocando na hora de inserir e remover, modificando apenas o tamanho e o ultimo elemento
+	escolhi essa abordagem para que assim as operacoes e estruturas de piha fiquem mais semelhantes as de fila
+*/
 
-typedef struct no
-{
-	struct no *prox, *ant;
-	elem chave;	
-}NO;
 
-typedef struct 
-{
-	NO *topo;
-	NO* ini;
-}pilha;
-
+//seta os ponteiros da pilha para NULL
 void cria_pilha(pilha *p){
 	p->topo = NULL;
 	p->ini = NULL;
 }
 
+//retorna quantos elementos estao empilhados
 int contador(pilha p){
 	int cont = 0;
 	NO *aux = p.ini;
@@ -30,12 +24,14 @@ int contador(pilha p){
 	return cont;
 }
 
+//retorna 1 caso a pilha esteja vazia e 0 caso o contrario
 int pilha_vazia(pilha *p){
 	if(p->topo == NULL)
 		return 1;
 	return 0;
 }
 
+//insere o elemnto no final da pilha e atualiza os ponteiros
 void push(pilha *p, elem chave){
 	NO * temp = malloc(sizeof(NO));
 	temp->prox = NULL;
@@ -51,6 +47,7 @@ void push(pilha *p, elem chave){
 	}
 }
 
+//retira o elemento do topo
 void pop(pilha *p){
 	NO* aux = p->topo;
 	if(aux != NULL){
@@ -63,10 +60,13 @@ void pop(pilha *p){
 	}
 }
 
+
+//retorna o NO do topo
 NO* topo(pilha p){
 	return p.topo;
 }
 
+//limpa a pilha
 void clear(pilha *p){
 	while(!pilha_vazia(p))
 		pop(p);
@@ -78,20 +78,4 @@ void imprime_pilha(pilha p){
 		printf("%d\n",aux->chave);
 		aux = aux->prox;
 	}
-}
-
-int main(int argc, char const *argv[])
-{
-	
-	pilha p;
-	cria_pilha(&p);
-	push(&p, 5);
-	push(&p, 6);
-	push(&p, 7);
-	push(&p, 8);
-	push(&p, 9);
-	pop(&p);
-	imprime_pilha(p);
-	clear(&p);
-	return 0;
 }

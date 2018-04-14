@@ -15,6 +15,9 @@ typedef struct
 	NO *fim;
 }FILA;
 
+void cria_fila(FILA *f);
+int fila_vazia(FILA* f);
+NO* front(FILA f);
 void push(FILA *f, elem chave);
 void pop(FILA *f);
 
