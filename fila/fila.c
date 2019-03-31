@@ -30,6 +30,8 @@ void push(FILA *f, elem chave){
 	temp->ant = f->fim;
 	if(f->fim != NULL)
 		f->fim->prox = temp;
+	else //Fila vazia, atualiza o ponteiro do inicio da fila
+		f->ini = temp;
 	f->fim = temp;
 }
 
